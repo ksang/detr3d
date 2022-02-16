@@ -4,17 +4,24 @@ This repo contains the implementations of Object DGCNN (https://arxiv.org/abs/21
 
 ### Prerequisite
 
-1. mmcv (https://github.com/open-mmlab/mmcv)
+```
+   CUDA_HOME=/usr/local/cuda conda env create -f environment.yml
+   conda activate detr3d
 
-2. mmdet (https://github.com/open-mmlab/mmdetection)
-
-3. mmseg (https://github.com/open-mmlab/mmsegmentation)
-
-4. mmdet3d (https://github.com/open-mmlab/mmdetection3d)
+   CUDA_HOME=/usr/local/cuda LLVM_CONFIG=/usr/bin/llvm-config-7 pip install -r requirements.txt
+```
+NOTE: mmdetection3D and mmcv_full might need install from complile, also numpy may need to be upgraded.
 
 ### Data
 1. Follow the mmdet3d to process the data.
 
+```
+   python tools/create_data.py nuscenes \
+         --root-path data/nuscenes/ \
+         --out-dir data/nuscenes/ \
+         --extra-tag nuscenes \
+         --version v1.0-mini
+```
 ### Train
 1. Downloads the [pretrained backbone weights](https://drive.google.com/drive/folders/1h5bDg7Oh9hKvkFL-dRhu5-ahrEp2lRNN?usp=sharing) to pretrained/ 
 
@@ -40,7 +47,14 @@ This repo contains the implementations of Object DGCNN (https://arxiv.org/abs/21
 2. To test, use  
 `tools/dist_test.sh projects/configs/obj_dgcnn/pillar_cosine.py /path/to/ckpt 8 --eval=bbox`
 
- 
+```
+python tools/test.py \
+   projects/configs/detr3d/detr3d_vovnet_gridmask_det_final_trainval_cbgs.py \
+   pretrained/detr3d_vovnet_trainval.pth \
+   --out output_result.pkl
+
+```
+
 If you find this repo useful for your research, please consider citing the papers
 
 ```
